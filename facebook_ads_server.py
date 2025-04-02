@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Thay bằng Access Token và ID tài khoản quảng cáo thật của bạn
 ACCESS_TOKEN = "EAAHmyf7kOZBIBO7jNqVwroeaURb9Ld0OTmRl2BvHFTTpEZBXZAcH9Bnzw04Bb8maNuifrnX43vU2RI3fwXhdcdyGSZCcr6clXcZB4M1gIAIJMXyFdK8nZA03m1N5ZADOM6xs5ogOoagDjXlXwdrBf7gf9fEKEmTnD17WYlWnpNXE2sjueOhBHzPcmPdsKOoNdWXYR2R5kpMqxB5a8SMcDvJVHGWFx0ZD"
-AD_ACCOUNT_ID = "act_673346717130837"
+AD_ACCOUNT_ID = "act_908237147237125"
 
 @app.route("/ads-summary", methods=["GET"])
 def ads_summary():
