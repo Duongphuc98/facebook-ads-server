@@ -16,6 +16,7 @@ def ads_summary():
     params = {
         "fields": "campaign_name,spend,ctr,cpc,website_purchase_roas",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
+        "level": "campaign",  # Lấy theo từng chiến dịch
         "access_token": ACCESS_TOKEN
     }
 
@@ -27,10 +28,7 @@ def ads_summary():
     campaigns = []
 
     for item in raw_data:
-        # Mặc định ROAS = None
         roas = None
-
-        # Nếu có trường website_purchase_roas → lấy giá trị
         if "website_purchase_roas" in item:
             roas_list = item.get("website_purchase_roas")
             if isinstance(roas_list, list) and len(roas_list) > 0:
