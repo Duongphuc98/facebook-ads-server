@@ -6,7 +6,7 @@ from collections import defaultdict
 app = Flask(__name__)
 
 # ✅ Thay bằng Access Token & ID tài khoản thật của bạn
-ACCESS_TOKEN = "EAAHmyf7kOZBIBO7jNqVwroeaURb9Ld0OTmRl2BvHFTTpEZBXZAcH9Bnzw04Bb8maNuifrnX43vU2RI3fwXhdcdyGSZCcr6clXcZB4M1gIAIJMXyFdK8nZA03m1N5ZADOM6xs5ogOoagDjXlXwdrBf7gf9fEKEmTnD17WYlWnpNXE2sjueOhBHzPcmPdsKOoNdWXYR2R5kpMqxB5a8SMcDvJVHGWFx0ZD"
+ACCESS_TOKEN = "EAAHmyf7kOZBIBO79Q9Q6yCItZC9BAXKS2bcaiRHh2HGhbxUKT4ZA1fmViyXo7cbfB6R96LhpPSj1cb7Fc3wc72jbJr4FYioM1wBgsy4iXJ0j6nZATTr1glnIt9u87uRVcYVqtFLzSK6xa8XYJUAX288Vny8z0CeBhkfZA6CeKxyM4uUQiXtVjpiQKCS5qw2Jzy24g2W4TTdx2lJfCUrUJCoW5qCIZD"
 AD_ACCOUNT_ID = "act_908237147237125"
 
 @app.route("/ads-summary", methods=["GET"])
