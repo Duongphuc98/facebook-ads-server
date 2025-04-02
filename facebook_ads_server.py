@@ -14,7 +14,7 @@ def ads_summary():
 
     url = f"https://graph.facebook.com/v19.0/{AD_ACCOUNT_ID}/insights"
     params = {
-        "fields": "campaign_name,spend,ctr,cpc,actions,website_purchase_roas",
+        "fields": "campaign_name,spend,ctr,cpc,actions",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
         "level": "campaign",
         "access_token": ACCESS_TOKEN
@@ -28,22 +28,10 @@ def ads_summary():
     campaigns = []
 
     for item in raw_data:
-        roas = None
-        if "website_purchase_roas" in item:
-            roas_list = item.get("website_purchase_roas")
-            if isinstance(roas_list, list) and len(roas_list) > 0:
-                value = roas_list[0].get("value")
-                if value:
-                    roas = float(value)
-
-        # Lấy số kết quả từ actions (ví dụ: lượt bắt đầu hội thoại)
+        # Lấy đúng kết quả là lượt bắt đầu cuộc trò chuyện
         results = 0
         for action in item.get("actions", []):
-            if action["action_type"] in [
-                "onsite_conversion.messaging_first_reply",
-                "offsite_conversion.purchase",
-                "link_click"
-            ]:
+            if action["action_type"] == "onsite_conversion.messaging_conversation_started":
                 results = int(float(action.get("value", 0)))
                 break
 
@@ -54,7 +42,7 @@ def ads_summary():
             "spend": float(item.get("spend", 0)),
             "ctr": float(item.get("ctr", 0)),
             "cpc": float(item.get("cpc", 0)),
-            "roas": roas,
+            "roas": None,  # bạn có thể bổ sung nếu cần
             "results": results,
             "cost_per_result": round(cost_per_result, 2) if cost_per_result else None
         }
