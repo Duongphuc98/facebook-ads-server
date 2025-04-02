@@ -16,7 +16,7 @@ def ads_summary():
     params = {
         "fields": "campaign_name,spend,ctr,cpc,actions",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
-        "level": "ad",  # <-- CHỈNH Ở ĐÂY
+        "level": "ad",  # lấy từ cấp ad để gom đúng
         "access_token": ACCESS_TOKEN,
         "limit": 500
     }
@@ -30,8 +30,8 @@ def ads_summary():
     grouped = defaultdict(lambda: {
         "spend": 0.0,
         "ctr_total": 0.0,
-        "cpc_total": 0.0,
         "ctr_count": 0,
+        "cpc_total": 0.0,
         "cpc_count": 0,
         "results": 0
     })
@@ -45,7 +45,7 @@ def ads_summary():
         ctr = float(item.get("ctr", 0))
         cpc = float(item.get("cpc", 0))
 
-        # Lấy results từ đúng action_type
+        # ✅ Lấy đúng results từ hành động bắt đầu cuộc trò chuyện
         results = 0
         for action in item.get("actions", []):
             if action["action_type"] == "onsite_conversion.messaging_conversation_started":
@@ -54,6 +54,7 @@ def ads_summary():
 
         grouped[name]["spend"] += spend
         grouped[name]["results"] += results
+
         if ctr > 0:
             grouped[name]["ctr_total"] += ctr
             grouped[name]["ctr_count"] += 1
