@@ -4,8 +4,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-ACCESS_TOKEN = "YOUR_ACCESS_TOKEN"
-AD_ACCOUNT_ID = "act_YOUR_AD_ACCOUNT_ID"
+ACCESS_TOKEN = "EAAHmyf7kOZBIBOZCX9ErgWZBpYJZCqcaTcCdv4BOlwgjAwQiqTX7pdpazHuwQn56iZAnKUuBX9UibunXX8GvbzBNVZBZBYPdrRY8iDEV5RfgUtOFNjfeoO2gnHNpovNcTBLmSRMUFYwrsP5m1krqLTemYKUzZAdVE5HAzJyoBZAuBTbrKAswX5wdHx9WWfVS9gBkhWZCInwFnu4g9LyLYBIXFCyonV2SEZD"
+AD_ACCOUNT_ID = "908237147237125"
 
 @app.route("/ads-summary", methods=["GET"])
 def ads_summary():
