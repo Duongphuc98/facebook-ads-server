@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Thay bằng Access Token và ID tài khoản quảng cáo thật của bạn
 ACCESS_TOKEN = "EAAHmyf7kOZBIBO7jNqVwroeaURb9Ld0OTmRl2BvHFTTpEZBXZAcH9Bnzw04Bb8maNuifrnX43vU2RI3fwXhdcdyGSZCcr6clXcZB4M1gIAIJMXyFdK8nZA03m1N5ZADOM6xs5ogOoagDjXlXwdrBf7gf9fEKEmTnD17WYlWnpNXE2sjueOhBHzPcmPdsKOoNdWXYR2R5kpMqxB5a8SMcDvJVHGWFx0ZD"
-AD_ACCOUNT_ID = "act_908237147237125"  # ví dụ: act_1234567890
+AD_ACCOUNT_ID = "act_908237147237125"
 
 @app.route("/ads-summary", methods=["GET"])
 def ads_summary():
@@ -14,7 +14,7 @@ def ads_summary():
 
     url = f"https://graph.facebook.com/v19.0/{AD_ACCOUNT_ID}/insights"
     params = {
-        "fields": "campaign_name,spend,ctr,cpc,actions",
+        "fields": "campaign_name,spend,ctr,cpc,website_purchase_roas",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
         "access_token": ACCESS_TOKEN
     }
@@ -27,12 +27,23 @@ def ads_summary():
     campaigns = []
 
     for item in raw_data:
+        # Mặc định ROAS = None
+        roas = None
+
+        # Nếu có trường website_purchase_roas → lấy giá trị
+        if "website_purchase_roas" in item:
+            roas_list = item.get("website_purchase_roas")
+            if isinstance(roas_list, list) and len(roas_list) > 0:
+                value = roas_list[0].get("value")
+                if value:
+                    roas = float(value)
+
         campaign = {
             "campaign_name": item.get("campaign_name"),
             "spend": float(item.get("spend", 0)),
             "ctr": float(item.get("ctr", 0)),
             "cpc": float(item.get("cpc", 0)),
-            "roas": None
+            "roas": roas
         }
         campaigns.append(campaign)
 
