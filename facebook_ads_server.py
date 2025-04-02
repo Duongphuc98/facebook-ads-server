@@ -14,9 +14,9 @@ def ads_summary():
 
     url = f"https://graph.facebook.com/v19.0/{AD_ACCOUNT_ID}/insights"
     params = {
-        "fields": "campaign_name,spend,ctr,cpc,website_purchase_roas",
+        "fields": "campaign_name,spend,ctr,cpc,actions,website_purchase_roas",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
-        "level": "campaign",  # Lấy theo từng chiến dịch
+        "level": "campaign",
         "access_token": ACCESS_TOKEN
     }
 
@@ -36,12 +36,27 @@ def ads_summary():
                 if value:
                     roas = float(value)
 
+        # Lấy số kết quả từ actions (ví dụ: lượt bắt đầu hội thoại)
+        results = 0
+        for action in item.get("actions", []):
+            if action["action_type"] in [
+                "onsite_conversion.messaging_first_reply",
+                "offsite_conversion.purchase",
+                "link_click"
+            ]:
+                results = int(float(action.get("value", 0)))
+                break
+
+        cost_per_result = float(item.get("spend", 0)) / results if results > 0 else None
+
         campaign = {
             "campaign_name": item.get("campaign_name"),
             "spend": float(item.get("spend", 0)),
             "ctr": float(item.get("ctr", 0)),
             "cpc": float(item.get("cpc", 0)),
-            "roas": roas
+            "roas": roas,
+            "results": results,
+            "cost_per_result": round(cost_per_result, 2) if cost_per_result else None
         }
         campaigns.append(campaign)
 
