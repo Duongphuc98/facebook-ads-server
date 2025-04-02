@@ -5,6 +5,7 @@ from collections import defaultdict
 
 app = Flask(__name__)
 
+# ✅ Thay bằng Access Token & ID tài khoản thật của bạn
 ACCESS_TOKEN = "EAAHmyf7kOZBIBO7jNqVwroeaURb9Ld0OTmRl2BvHFTTpEZBXZAcH9Bnzw04Bb8maNuifrnX43vU2RI3fwXhdcdyGSZCcr6clXcZB4M1gIAIJMXyFdK8nZA03m1N5ZADOM6xs5ogOoagDjXlXwdrBf7gf9fEKEmTnD17WYlWnpNXE2sjueOhBHzPcmPdsKOoNdWXYR2R5kpMqxB5a8SMcDvJVHGWFx0ZD"
 AD_ACCOUNT_ID = "act_908237147237125"
 
@@ -16,7 +17,7 @@ def ads_summary():
     params = {
         "fields": "campaign_name,spend,ctr,cpc,actions",
         "time_range": f'{{"since":"{date}","until":"{date}"}}',
-        "level": "ad",  # lấy từ cấp ad để gom đúng
+        "level": "ad",
         "access_token": ACCESS_TOKEN,
         "limit": 500
     }
@@ -26,7 +27,6 @@ def ads_summary():
         return jsonify({"error": "Không thể lấy dữ liệu từ Facebook", "details": response.json()}), 400
 
     raw_data = response.json().get("data", [])
-
     grouped = defaultdict(lambda: {
         "spend": 0.0,
         "ctr_total": 0.0,
@@ -45,7 +45,7 @@ def ads_summary():
         ctr = float(item.get("ctr", 0))
         cpc = float(item.get("cpc", 0))
 
-        # ✅ Lấy đúng results từ hành động bắt đầu cuộc trò chuyện
+        # ✅ Lấy đúng số lượng kết quả (kết quả = số inbox)
         results = 0
         for action in item.get("actions", []):
             if action["action_type"] == "onsite_conversion.messaging_conversation_started":
@@ -79,7 +79,6 @@ def ads_summary():
         })
 
     return jsonify({"campaigns": campaigns})
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
